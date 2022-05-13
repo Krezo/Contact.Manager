@@ -4,7 +4,9 @@
 
 > rename ./backend/.env.example to .env
 
-> set database DB\_\* settings npm install
+> set database DB\_\* settings
+
+> npm install
 
 #### Database
 
