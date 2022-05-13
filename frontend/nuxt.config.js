@@ -48,7 +48,7 @@ export default {
     strategies: {
       laravelSanctum: {
         provider: 'laravel/sanctum',
-        url: 'http://localhost:9000/api/auth',
+        url: 'http://localhost:8000/api/auth',
         user: {
           property: 'data'
         },
@@ -67,7 +67,7 @@ export default {
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {
     // Workaround to avoid enforcing hard-coded localhost:3000: https://github.com/nuxt-community/axios-module/issues/308
-    baseURL: 'http://localhost:9000/api',
+    baseURL: 'http://localhost:8000/api',
     credentials: true
   },
   toast: {
