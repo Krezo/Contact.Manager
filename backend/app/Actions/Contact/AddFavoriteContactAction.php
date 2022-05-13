@@ -3,22 +3,24 @@
 namespace App\Actions\Contact;
 
 use App\Models\Contact;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\Auth;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class AddFavoriteContactAction
 {
   /**
-   * handle
+   * Action : Добавляет контак в список избранного пользователя
    *
-   * @param  mixed $id
-   * @throws NotFoundHttpException
-   * @return Contact
+   * @param  int $id Идентификатор добавлямого контакта
+   * @throws ModelNotFoundException
+   * @return Contact Модель контакта
    */
   public function handle(int $id): Contact
   {
     $findedContact = Contact::findOrFail($id);
-    Auth::user()->favoriteContacts()->attach($findedContact->id);
+    $userFavoriteContactsQuery = Auth::user()->favoriteContacts();
+    // Если контак уже есть в списке избранного, то не добавляем его
+    if (!$userFavoriteContactsQuery->find($id)) $userFavoriteContactsQuery->attach($findedContact->id);
     return $findedContact;
   }
 }

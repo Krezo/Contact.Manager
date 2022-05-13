@@ -11,10 +11,17 @@ use Illuminate\Support\Facades\Hash;
 
 class RegisterAction
 {
+  /**
+   * Регистрация пользователя
+   *
+   * @param  RegisterRequest $request
+   * @throws Exception
+   * @return User
+   */
   public function handle(RegisterRequest $request): User
   {
     if (User::where('email', $request['email'])->first()) {
-      throw new Exception('Пользователь с таким email уже существует', 1);
+      throw new Exception('Пользователь с таким email уже существует');
     }
     return User::create([
       'name' => $request->get('name'),

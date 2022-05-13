@@ -61,7 +61,7 @@ import VCard from '~/components/UI/v-card.vue'
 import VInput from '~/components/UI/v-input.vue'
 import VLabel from '~/components/UI/v-label.vue'
 import VFormError from '~/components/UI/v-form-error.vue'
-import { ModelResourseWrapper } from '~/lib/types'
+import { ErrorMessage, ModelResourseWrapper } from '~/lib/types'
 import { Models } from '~/lib/Models'
 
 export default Vue.extend({
@@ -79,9 +79,9 @@ export default Vue.extend({
   data() {
     return {
       isLogining: false,
-      username: '123',
-      password: '123456',
-      email: '123@123.r2',
+      username: '',
+      password: '',
+      email: '',
       formErorrs: [] as string[],
     }
   },
@@ -90,34 +90,25 @@ export default Vue.extend({
     async registerUser() {
       this.formErorrs = []
       this.isLogining = true
-      const isValidated = await new Promise((resolve) =>
-        setTimeout(() => {
-          resolve(this.validate())
-        }, 500)
-      )
-      if (!isValidated) {
+      if (!this.validate()) {
         this.isLogining = false
         return
       }
       try {
-        const apiResponseData = (
-          await this.$axios.post<ModelResourseWrapper<Models.User>>(
-            '/auth/register',
-            {
-              name: this.username,
-              password: this.password,
-              email: this.email,
-            }
-          )
-        ).data
+        await this.$axios.post<ModelResourseWrapper<Models.User>>(
+          '/auth/register',
+          {
+            name: this.username,
+            password: this.password,
+            email: this.email,
+          }
+        )
         this.$router.push('/')
       } catch (e: unknown) {
         if (axios.isAxiosError(e)) {
-          this.formErorrs.push(e.response?.data.message)
-        } else
-          this.$toast.error(
-            'Произошла непредвиденная ошибка. Попробуйте еще раз'
-          )
+          const errorMessage = e.response?.data.message
+          if (errorMessage) this.$toast.error(errorMessage, { duration: 3000 })
+        } else this.$toast.error(ErrorMessage.UNKWOWN, { duration: 3000 })
       }
       this.isLogining = false
     },

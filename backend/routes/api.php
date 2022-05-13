@@ -24,15 +24,15 @@ Route::get('/test', function () {
 });
 
 Route::prefix('auth')->group(function () {
-    Route::post('login', [AuthController::class, 'login']);
-    Route::get('user', [AuthController::class, 'user']);
-    Route::post('register', [AuthController::class, 'register']);
+    Route::post('login', [AuthController::class, 'login'])->name('login');
+    Route::get('user', [AuthController::class, 'user'])->name('user');
+    Route::post('register', [AuthController::class, 'register'])->name('register');
 });
 
 
 Route::prefix('/contacts')->group(function () {
-    Route::get('/', [ContactController::class, 'index']);
-    Route::get('/favorite', [ContactController::class, 'favorite']);
-    Route::get('/favorite/{id}', [ContactController::class, 'addToFavorite']);
-    Route::delete('/favorite/{id}', [ContactController::class, 'deleteFromFavorite']);
+    Route::get('/', [ContactController::class, 'index'])->name('contacts');
+    Route::get('/favorite', [ContactController::class, 'favorite'])->name('favorite_contacts');
+    Route::get('/favorite/{id}', [ContactController::class, 'addToFavorite'])->name('add_contact');
+    Route::delete('/favorite/{id}', [ContactController::class, 'deleteFromFavorite'])->name('delete_contact');
 });

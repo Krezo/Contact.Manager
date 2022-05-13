@@ -10,6 +10,7 @@ use App\Http\Resources\UserResource;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use Illuminate\Support\Facades\Log;
 
 class AuthController extends Controller
 {
@@ -18,22 +19,38 @@ class AuthController extends Controller
     $this->middleware(['auth:sanctum'])->except(['login', 'register']);
   }
 
+  /**
+   * Вход пользователя
+   *
+   * @param  LoginRequest $request
+   * @param  LoginAction $action
+   * @return void | \Illuminate\Http\Response|\Illuminate\Contracts\Routing\ResponseFactory
+   */
   public function login(LoginRequest $request, LoginAction $action)
   {
-    if ($action->handle($request)) {
-      $request->session()->regenerate();
-      return response('', 200);
-    } else
-      return response([
-        'message' => 'Выввели неверный логин/пароль'
-      ], 401);
+    if (!$action->handle($request)) return response([
+      'message' => 'Вы ввели неверный логин/пароль'
+    ], 401);
   }
 
-  public function user(Request $request)
+  /**
+   * Получение пользователя
+   *
+   * @param  Request $request
+   * @return UserResource
+   */
+  public function user(Request $request): UserResource
   {
     return new UserResource($request->user());
   }
 
+  /**
+   * Регистрация пользователя
+   *
+   * @param  RegisterRequest $request
+   * @param  RegisterAction $action
+   * @return UserResource | \Illuminate\Http\Response|\Illuminate\Contracts\Routing\ResponseFactory
+   */
   public function register(RegisterRequest $request, RegisterAction $action)
   {
     try {

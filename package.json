@@ -1,0 +1,15 @@
+{
+  "name": "laravel_nuxt_contact_manager",
+  "version": "1.0.0",
+  "description": "Contacr Manager App",
+  "scripts": {
+    "install": "concurrently \"cd backend && composer install\" \"cd frontend && npm install\" ",
+    "dev" : "concurrently  \"cd backend && php artisan serve\" \"cd frontend && npm run dev\" ",
+    "test" : "cd backend && php artisan test"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "concurrently": "^7.1.0"
+  }
+}

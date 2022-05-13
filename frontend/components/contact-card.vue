@@ -72,10 +72,10 @@ export default Vue.extend({
             this.$toast.error(e.response?.data.message, {
               duration: 3000,
             })
-        }
-        this.$toast.error(ErrorMessage.UNKWOWN, {
-          duration: 3000,
-        })
+        } else
+          this.$toast.error(ErrorMessage.UNKWOWN, {
+            duration: 3000,
+          })
       }
       this.isAddToFavorite = false
     },

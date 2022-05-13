@@ -50,6 +50,7 @@ import VCard from '~/components/UI/v-card.vue'
 import VInput from '~/components/UI/v-input.vue'
 import VLabel from '~/components/UI/v-label.vue'
 import VFormError from '~/components/UI/v-form-error.vue'
+import { ErrorMessage } from '~/lib/types'
 
 export default Vue.extend({
   components: {
@@ -66,8 +67,8 @@ export default Vue.extend({
   data() {
     return {
       isLogining: false,
-      email: 'bezushko.aiu@gmail.com',
-      password: '123456',
+      email: '',
+      password: '',
       formErorrs: [] as string[],
     }
   },
@@ -75,12 +76,7 @@ export default Vue.extend({
     async loginUser() {
       this.formErorrs = []
       this.isLogining = true
-      const isValidated = await new Promise((resolve) =>
-        setTimeout(() => {
-          resolve(this.validate())
-        }, 300)
-      )
-      if (!isValidated) {
+      if (!this.validate()) {
         this.isLogining = false
         return
       }
@@ -93,11 +89,9 @@ export default Vue.extend({
         })
       } catch (e: unknown) {
         if (axios.isAxiosError(e)) {
-          this.formErorrs.push(e.response?.data.message)
-        } else
-          this.$toast.error(
-            'Произошла непредвиденная ошибка. Попробуйте еще раз'
-          )
+          const errorMessage = e.response?.data.message
+          if (errorMessage) this.$toast.error(errorMessage, { duration: 3000 })
+        } else this.$toast.error(ErrorMessage.UNKWOWN, { duration: 3000 })
       }
       this.isLogining = false
     },

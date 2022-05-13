@@ -30,6 +30,7 @@ export default Vue.extend({
       store.dispatch('favorite/' + FavoriteAction.LOAD_FAVORITE_CONTACTS)
     },
   ],
+  transition: 'home',
   async asyncData({ $axios }) {
     try {
       const apiResponseData = (
