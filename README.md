@@ -1,6 +1,6 @@
 # Contact manager app
 
-## Запуск проекта ##
+## Run project ##
 
 - `rename ./backend/.env.example to .env`
 
